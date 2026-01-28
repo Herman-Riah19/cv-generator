@@ -90,7 +90,7 @@ export function CVPreview({ data, skillsIconType, languagesIconType }: CVPreview
                 .filter((skill) => skill.name.trim())
                 .map((skill, index) => (
                   <div key={skill.id} className="flex gap-4 py-1">
-                    <span className="w-1/3 text-gray-700 font-medium">
+                    <span className="w-1/3 text-md text-gray-700 font-medium">
                       {skill.name}
                     </span>
                     <div className="flex gap-1">
@@ -122,7 +122,7 @@ export function CVPreview({ data, skillsIconType, languagesIconType }: CVPreview
                 .filter((lang) => lang.name.trim())
                 .map((language) => (
                   <div key={language.id} className="flex gap-4 py-1">
-                    <span className="w-1/3 text-gray-700 font-medium">
+                    <span className="w-1/3 text-md text-gray-700 font-medium">
                       {language.name}
                     </span>
                     <div className="flex gap-1">
@@ -162,7 +162,7 @@ export function CVPreview({ data, skillsIconType, languagesIconType }: CVPreview
                           {formatDate(diploma.endDate as string) || "Présent"}
                         </p>
                       </div>
-                      <p className="text-lg text-gray-600 italic">
+                      <p className="text-md text-gray-600 italic">
                         {diploma.institution}
                       </p>
                     </div>
