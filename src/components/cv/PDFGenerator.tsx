@@ -8,7 +8,7 @@ import { toPng } from "html-to-image";
 
 interface PDFGeneratorProps {
   data: CVData;
-  previewRef: React.RefObject<HTMLDivElement>;
+  previewRef: React.RefObject<HTMLDivElement | null>;
   onSubmit: () => void;
 }
 
