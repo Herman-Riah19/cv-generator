@@ -1,4 +1,21 @@
-const API_BASE_URL = "/api/lm-studio";
+const LM_STUDIO_URL_KEY = "lm-studio-url";
+
+const DEFAULT_LM_STUDIO_URL = "http://localhost:1234/v1";
+
+export function getLmStudioUrl(): string {
+  if (typeof window === "undefined") return DEFAULT_LM_STUDIO_URL;
+  return localStorage.getItem(LM_STUDIO_URL_KEY) || DEFAULT_LM_STUDIO_URL;
+}
+
+export function setLmStudioBaseUrl(url: string): void {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(LM_STUDIO_URL_KEY, url);
+  }
+}
+
+export function getApiBaseUrl(): string {
+  return "/api/lm-studio";
+}
 
 export interface GenerateDescriptionParams {
   position: string;
@@ -30,13 +47,16 @@ export async function generateExperienceDescription(
   const userPrompt = `Génère les descriptions de tâches pour le poste de ${position} chez ${company}. 
   Type d'expérience: ${jobType}`;
 
+  const lmStudioUrl = getLmStudioUrl();
+
   try {
-    const response = await fetch(`${API_BASE_URL}/chat`, {
+    const response = await fetch(`${getApiBaseUrl()}/chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        lmStudioUrl,
         model: "oppus-v1.2-llama-3-8b",
         messages: [
           { role: "system", content: systemPrompt },
@@ -91,10 +111,15 @@ export async function generateExperienceDescription(
   }
 }
 
-export async function checkLMStudioConnection(): Promise<boolean> {
+export async function checkLMStudioConnection(customUrl?: string): Promise<boolean> {
+  const url = customUrl || getLmStudioUrl();
   try {
-    const response = await fetch(`${API_BASE_URL}/models`, {
-      method: "GET",
+    const response = await fetch(`${getApiBaseUrl()}/models`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ lmStudioUrl: url }),
     });
     return response.ok;
   } catch {

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CVData } from "@/types/cv";
 import { Button } from "@/components/ui/button";
-import { Download, FileJson, Check, Loader2, Sparkles } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import {
   convertToJSONResume,
   downloadJSON,
@@ -12,7 +12,20 @@ import {
 import {
   generateExperienceDescription,
   checkLMStudioConnection,
+  setLmStudioBaseUrl,
+  getLmStudioUrl,
 } from "@/lib/lm-studio";
+import {
+  Download,
+  FileJson,
+  Check,
+  Loader2,
+  Sparkles,
+  Settings,
+  ChevronDown,
+  ChevronUp,
+  Server,
+} from "lucide-react";
 
 const AVAILABLE_THEMES = [
   { id: "default", name: "Default (ATS-Friendly)", package: "default" },
@@ -28,6 +41,8 @@ const AVAILABLE_THEMES = [
     package: "@warleon/jsonresume-theme-compact",
   },
 ];
+
+const DEFAULT_LM_STUDIO_URL = "http://localhost:1234/v1";
 
 interface ToolbarProps {
   data: CVData;
@@ -158,9 +173,20 @@ export function AIGenerateButton({
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState<boolean | null>(null);
+  const [showSettings, setShowSettings] = useState(false);
+  const [lmStudioUrl, setLmStudioUrl] = useState(DEFAULT_LM_STUDIO_URL);
+
+  useEffect(() => {
+    setLmStudioUrl(getLmStudioUrl());
+  }, []);
+
+  const handleSaveUrl = () => {
+    setLmStudioBaseUrl(lmStudioUrl);
+    setShowSettings(false);
+  };
 
   const handleCheckConnection = async () => {
-    const connected = await checkLMStudioConnection();
+    const connected = await checkLMStudioConnection(lmStudioUrl);
     setIsConnected(connected);
     return connected;
   };
@@ -171,15 +197,14 @@ export function AIGenerateButton({
       return;
     }
 
+    setLmStudioBaseUrl(lmStudioUrl);
     setError(null);
     setIsGenerating(true);
 
     try {
       const connected = await handleCheckConnection();
       if (!connected) {
-        setError(
-          "LM Studio n'est pas connecté. Veuillez démarrer LM Studio et charger un modèle.",
-        );
+        setError("LM Studio non connecté. Vérifiez l'URL dans les paramètres.");
         setIsGenerating(false);
         return;
       }
@@ -188,8 +213,31 @@ export function AIGenerateButton({
         position,
         company,
       });
+      let normalizedDescriptions: string[] = [];
 
-      onGenerated(descriptions);
+      if (typeof descriptions === "string") {
+        try {
+          const parsed = JSON.parse(descriptions);
+          if (Array.isArray(parsed)) {
+            normalizedDescriptions = parsed;
+          } else {
+            normalizedDescriptions = [descriptions];
+          }
+        } catch {
+          // Si JSON.parse échoue, on nettoie manuellement
+          normalizedDescriptions = descriptions
+            .replace(/^\s*\[/, "")
+            .replace(/^\s*{/, "")
+            .replace(/\}\s*$/, "")
+            .replace(/\]\s*$/, "")
+            .split('",')
+            .map((item) => item.replace(/^"/, "").replace(/"$/, "").trim());
+        }
+      } else if (Array.isArray(descriptions)) {
+        normalizedDescriptions = descriptions;
+      }
+
+      onGenerated(normalizedDescriptions);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Erreur lors de la génération",
@@ -201,26 +249,57 @@ export function AIGenerateButton({
 
   return (
     <div className="space-y-2">
-      <Button
-        type="button"
-        onClick={handleGenerate}
-        disabled={isGenerating}
-        variant="secondary"
-        size="sm"
-        className="w-full"
-      >
-        {isGenerating ? (
-          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-        ) : (
-          <Sparkles className="h-4 w-4 mr-2" />
-        )}
-        {isGenerating ? "Génération..." : "Générer avec IA"}
-      </Button>
+      <div className="flex gap-2">
+        <Button
+          type="button"
+          onClick={handleGenerate}
+          disabled={isGenerating}
+          variant="secondary"
+          size="sm"
+          className="flex-1"
+        >
+          {isGenerating ? (
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          ) : (
+            <Sparkles className="h-4 w-4 mr-2" />
+          )}
+          {isGenerating ? "Génération..." : "Générer avec IA"}
+        </Button>
+
+        <Button
+          type="button"
+          variant="outline"
+          size="icon-sm"
+          onClick={() => setShowSettings(!showSettings)}
+          title="Paramètres LM Studio"
+        >
+          <Settings className="h-4 w-4" />
+        </Button>
+      </div>
+
+      {showSettings && (
+        <div className="bg-gray-50 border rounded-lg p-3 space-y-2">
+          <div className="flex items-center gap-2 text-sm font-medium">
+            <Server className="w-4 h-4" />
+            <span>Configuration LM Studio</span>
+          </div>
+          <Input
+            value={lmStudioUrl}
+            onChange={(e) => setLmStudioUrl(e.target.value)}
+            placeholder="http://localhost:1234/v1"
+            className="text-sm"
+          />
+          <p className="text-xs text-muted-foreground">
+            URL de l&apos;API LM Studio (ex: http://localhost:1234/v1)
+          </p>
+          <Button size="sm" onClick={handleSaveUrl} className="w-full">
+            Sauvegarder
+          </Button>
+        </div>
+      )}
 
       {isConnected === false && (
-        <p className="text-xs text-orange-600">
-          LM Studio non détecté sur localhost:1234
-        </p>
+        <p className="text-xs text-orange-600">LM Studio non détecté</p>
       )}
 
       {error && <p className="text-xs text-red-600">{error}</p>}

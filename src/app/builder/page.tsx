@@ -72,7 +72,6 @@ export default function BuilderPage() {
   });
 
   const onSubmit = (data: CVDataForm) => {
-    console.log("CV Data:", data);
   };
 
   return (

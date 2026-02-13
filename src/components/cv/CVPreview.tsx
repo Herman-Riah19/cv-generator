@@ -32,8 +32,6 @@ export function CVPreview({ data, skillsIconType, languagesIconType }: CVPreview
     return `${monthNames[parseInt(month) - 1]} ${year}`;
   };
 
-  console.log("CV Preview Data:", data);
-
   return (
     <div className="w-full max-w-3xl mx-auto bg-white p-8 shadow-none border-none">
       {/* Header - ATS Optimized */}

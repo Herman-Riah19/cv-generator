@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const LM_STUDIO_BASE_URL = "http://localhost:1234/v1";
-
-export async function GET() {
+export async function POST(request: NextRequest) {
   try {
-    const response = await fetch(`${LM_STUDIO_BASE_URL}/models`, {
+    const body = await request.json();
+    const lmStudioUrl = body.lmStudioUrl || "http://localhost:1234/v1";
+    
+    const response = await fetch(`${lmStudioUrl}/models`, {
       method: "GET",
     });
-    
+
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {

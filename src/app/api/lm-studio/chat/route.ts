@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const LM_STUDIO_BASE_URL = "http://localhost:1234/v1";
-
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    const lmStudioUrl = body.lmStudioUrl || "http://localhost:1234/v1"; 
     
-    const response = await fetch(`${LM_STUDIO_BASE_URL}/chat/completions`, {
+    const response = await fetch(`${lmStudioUrl}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
