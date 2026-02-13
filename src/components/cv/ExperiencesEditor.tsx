@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TextField } from "@/components/ui/text-field";
 import {
-  useFieldArray,
   UseFieldArrayReturn,
   UseFormReturn,
 } from "react-hook-form";
 import { Plus, Trash2 } from "lucide-react";
 import { CVDataForm } from "@/lib/validation";
+import { AIGenerateButton } from "./Toolbar";
 
 interface ExperiencesEditorProps {
   form: UseFormReturn<CVDataForm>;
@@ -41,8 +41,7 @@ export function ExperiencesEditor({
 
       <CardContent className="space-y-6">
         {fields.map((field, expIndex) => {
-          const descriptions =
-            form.watch(`experiences.${expIndex}.description`) ?? [];
+          let descriptions = form.watch(`experiences.${expIndex}.description`) ?? [];
 
           const addDescriptionItem = () => {
             form.setValue(
@@ -58,6 +57,20 @@ export function ExperiencesEditor({
               descriptions.filter((_, i) => i !== index),
               { shouldDirty: true },
             );
+          };
+
+          const position = form.watch(`experiences.${expIndex}.position`) || "";
+          const company = form.watch(`experiences.${expIndex}.company`) || "";
+
+          const handleAIGenerated = (generatedDescriptions: string[]) => {
+            if (generatedDescriptions.length > 0) {
+              descriptions = generatedDescriptions;
+              form.setValue(
+                `experiences.${expIndex}.description`,
+                generatedDescriptions,
+                { shouldDirty: true }
+              );
+            }
           };
 
           return (
@@ -127,16 +140,24 @@ export function ExperiencesEditor({
                     </div>
                   ))}
 
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                    onClick={() => addDescriptionItem()}
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Ajouter une tâche
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                      onClick={() => addDescriptionItem()}
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Ajouter une tâche
+                    </Button>
+
+                    <AIGenerateButton
+                      position={position}
+                      company={company}
+                      onGenerated={handleAIGenerated}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
