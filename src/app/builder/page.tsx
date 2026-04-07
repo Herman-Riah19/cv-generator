@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cvDataSchema, CVDataForm } from "@/lib/validation";
@@ -36,7 +36,6 @@ export default function BuilderPage() {
   const [skillsIconType, setSkillsIconType] = useState<RatingIconType>("star");
   const [languagesIconType, setLanguagesIconType] = useState<RatingIconType>("heart");
   const [cvData, setCvData] = useState<CVData | null>(null);
-  const previewRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<CVDataForm>({
     resolver: zodResolver(cvDataSchema),
@@ -80,7 +79,7 @@ export default function BuilderPage() {
         <h1 className="text-3xl font-bold text-center mb-8">Générateur de CV ATS-Friendly</h1>
         
         <Form {...form}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Editor Section */}
             <div className="space-y-6">
               <PersonalInfoEditor form={form} />
@@ -111,17 +110,23 @@ export default function BuilderPage() {
             </div>
 
             {/* Preview Section */}
-            <div className="space-y-6">
-              {cvData && <Toolbar data={cvData} />}
+            <div className="lg:col-span-2 space-y-8">
+              {cvData && (
+                <Toolbar 
+                  data={cvData} 
+                  onImport={(importedData) => form.reset(importedData)} 
+                />
+              )}
               
               <div className="sticky top-8 space-y-4">
                 <PDFGenerator 
-                  data={form.getValues() as CVData} 
-                  previewRef={previewRef}
+                  data={form.getValues() as CVData}
+                  skillsIconType={skillsIconType}
+                  languagesIconType={languagesIconType}
                   onSubmit={form.handleSubmit(onSubmit)}
                 />
                 
-                <div ref={previewRef}>
+                <div>
                   <CVPreview 
                     data={form.getValues()} 
                     skillsIconType={skillsIconType}

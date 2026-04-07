@@ -147,3 +147,57 @@ export function downloadJSON(data: unknown, filename: string = "resume.json") {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 }
+
+function generateId(): string {
+  return Math.random().toString(36).substring(2, 15);
+}
+
+export function convertFromJSONResume(data: JSONResumeSchema): CVData {
+  return {
+    personalInfo: {
+      name: data.basics?.name || "",
+      email: data.basics?.email || "",
+      poste: data.basics?.label || "",
+      portfolio: data.basics?.url || "",
+      adresse: data.basics?.location?.address || "",
+      phone: data.basics?.phone || "",
+      description: data.basics?.summary || "",
+    },
+    skills: (data.skills || []).map((skill) => ({
+      id: generateId(),
+      name: skill.name || "",
+      level: skill.level || 1,
+    })),
+    languages: (data.languages || []).map((lang) => ({
+      id: generateId(),
+      name: lang.language || "",
+      level: getLevelFromFluency(lang.fluency),
+    })),
+    diplomas: (data.education || []).map((edu) => ({
+      id: generateId(),
+      name: edu.area || edu.studyType || "",
+      institution: edu.institution || "",
+      startDate: edu.startDate || "",
+      endDate: edu.endDate,
+    })),
+    experiences: (data.work || []).map((work) => ({
+      id: generateId(),
+      position: work.position || "",
+      company: work.name || "",
+      startDate: work.startDate || "",
+      endDate: work.endDate,
+      description: work.highlights || [],
+    })),
+  };
+}
+
+function getLevelFromFluency(fluency?: string): number {
+  const levels: Record<string, number> = {
+    "Débutant": 1,
+    "Élémentaire": 2,
+    "Intermédiaire": 3,
+    "Avancé": 4,
+    "Natif": 5,
+  };
+  return levels[fluency || ""] || 3;
+}

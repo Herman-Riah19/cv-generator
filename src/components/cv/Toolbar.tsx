@@ -8,6 +8,8 @@ import {
   convertToJSONResume,
   downloadJSON,
   validateJSONResume,
+  convertFromJSONResume,
+  JSONResumeSchema,
 } from "@/lib/json-resume";
 import {
   generateExperienceDescription,
@@ -25,6 +27,7 @@ import {
   ChevronDown,
   ChevronUp,
   Server,
+  Upload,
 } from "lucide-react";
 
 const AVAILABLE_THEMES = [
@@ -47,9 +50,10 @@ const DEFAULT_LM_STUDIO_URL = "http://localhost:1234/v1";
 interface ToolbarProps {
   data: CVData;
   onThemeChange?: (theme: string) => void;
+  onImport?: (data: CVData) => void;
 }
 
-export function Toolbar({ data, onThemeChange }: ToolbarProps) {
+export function Toolbar({ data, onThemeChange, onImport }: ToolbarProps) {
   const [selectedTheme, setSelectedTheme] = useState("default");
   const [isExporting, setIsExporting] = useState(false);
   const [exportStatus, setExportStatus] = useState<
@@ -93,6 +97,23 @@ export function Toolbar({ data, onThemeChange }: ToolbarProps) {
     if (theme && onThemeChange) {
       onThemeChange(theme.package);
     }
+  };
+
+  const handleImportJSON = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const jsonData = JSON.parse(text) as JSONResumeSchema;
+      const cvData = convertFromJSONResume(jsonData);
+      onImport?.(cvData);
+    } catch (error) {
+      console.error("Import error:", error);
+      alert("Erreur lors de l'importation du fichier JSON");
+    }
+    
+    event.target.value = "";
   };
 
   return (
@@ -148,6 +169,21 @@ export function Toolbar({ data, onThemeChange }: ToolbarProps) {
           )}
           {isExporting ? "Validation..." : "Exporter JSON"}
         </Button>
+
+        <label className="cursor-pointer">
+          <input
+            type="file"
+            accept=".json"
+            onChange={handleImportJSON}
+            className="hidden"
+          />
+          <Button variant="outline" className="w-full" asChild>
+            <span>
+              <Upload className="h-4 w-4 mr-2" />
+              Importer JSON
+            </span>
+          </Button>
+        </label>
 
         {exportStatus === "success" && (
           <p className="text-xs text-green-600 text-center">
