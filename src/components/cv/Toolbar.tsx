@@ -249,31 +249,8 @@ export function AIGenerateButton({
         position,
         company,
       });
-      let normalizedDescriptions: string[] = [];
 
-      if (typeof descriptions === "string") {
-        try {
-          const parsed = JSON.parse(descriptions);
-          if (Array.isArray(parsed)) {
-            normalizedDescriptions = parsed;
-          } else {
-            normalizedDescriptions = [descriptions];
-          }
-        } catch {
-          // Si JSON.parse échoue, on nettoie manuellement
-          normalizedDescriptions = descriptions
-            .replace(/^\s*\[/, "")
-            .replace(/^\s*{/, "")
-            .replace(/\}\s*$/, "")
-            .replace(/\]\s*$/, "")
-            .split('",')
-            .map((item) => item.replace(/^"/, "").replace(/"$/, "").trim());
-        }
-      } else if (Array.isArray(descriptions)) {
-        normalizedDescriptions = descriptions;
-      }
-
-      onGenerated(normalizedDescriptions);
+      onGenerated(descriptions);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Erreur lors de la génération",
