@@ -4,6 +4,7 @@ import { CVData } from "@/types/cv";
 import { RatingIcon } from "@/components/ui/rating-system";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface CVPreviewProps {
   data: CVData;
@@ -22,23 +23,14 @@ export function CVPreview({
   skillsIconType,
   languagesIconType,
 }: CVPreviewProps) {
+  const { t, language } = useLanguage();
+  
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
     const [year, month] = dateString.split("-");
-    const monthNames = [
-      "Janvier",
-      "Février",
-      "Mars",
-      "Avril",
-      "Mai",
-      "Juin",
-      "Juillet",
-      "Août",
-      "Septembre",
-      "Octobre",
-      "Novembre",
-      "Décembre",
-    ];
+    const monthNames = language === "fr" 
+      ? ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+      : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     return `${monthNames[parseInt(month) - 1]} ${year}`;
   };
 
@@ -85,7 +77,7 @@ export function CVPreview({
 
         <div className="flex flex-col">
           <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
-            Résumer
+            {t("summary")}
           </h2>
           {data.personalInfo.description && (
             <p className="text-lg text-gray-700 leading-relaxed">
@@ -100,7 +92,7 @@ export function CVPreview({
         {data.skills.length > 0 && (
           <section>
             <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
-              Compétences Techniques
+              {t("technicalSkills")}
             </h2>
             <div className="grid grid-cols-3 gap-2">
               {data.skills
@@ -132,7 +124,7 @@ export function CVPreview({
         {data.languages && data.languages.length > 0 && (
           <section>
             <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
-              Langues
+              {t("languages")}
             </h2>
             <div className="grid grid-cols-3 gap-2">
               {data.languages
@@ -164,7 +156,7 @@ export function CVPreview({
         {data.diplomas.length > 0 && (
           <section>
             <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
-              Formation
+              {t("education")}
             </h2>
             <div className="space-y-4">
               {data.diplomas &&
@@ -176,7 +168,7 @@ export function CVPreview({
                       </h3>
                       <p className="text-sm text-gray-600 italic">
                         {formatDate(diploma.startDate)} -{" "}
-                        {formatDate(diploma.endDate as string) || "Présent"}
+                        {formatDate(diploma.endDate as string) || t("present")}
                       </p>
                     </div>
                     <p className="text-md text-gray-600 italic">
@@ -193,7 +185,7 @@ export function CVPreview({
         {data.experiences.length > 0 && (
           <section>
             <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
-              Expérience Professionnelle
+              {t("professionalExperience")}
             </h2>
             <div className="space-y-6">
               {data.experiences &&
@@ -206,7 +198,7 @@ export function CVPreview({
                         </h3>
                         <p className="text-sm text-gray-600 italic">
                           {formatDate(exp.startDate)} -{" "}
-                          {formatDate(exp.endDate as string) || "Présent"}
+                          {formatDate(exp.endDate as string) || t("present")}
                         </p>
                       </div>
                       <p className="text-lg text-gray-600 italic">

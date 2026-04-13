@@ -6,6 +6,7 @@ import { TextField } from "@/components/ui/text-field";
 import { UseFieldArrayReturn, UseFormReturn } from "react-hook-form";
 import { Plus, Trash2 } from "lucide-react";
 import { CVDataForm } from "@/lib/validation";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface DiplomasEditorProps {
   form: UseFormReturn<CVDataForm>;
@@ -13,6 +14,7 @@ interface DiplomasEditorProps {
 }
 
 export function DiplomasEditor({ form, fieldsArray }: DiplomasEditorProps) {
+  const { t } = useLanguage();
   const { fields, append, remove } = fieldsArray;
 
   const addDiploma = () => {
@@ -28,13 +30,13 @@ export function DiplomasEditor({ form, fieldsArray }: DiplomasEditorProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Diplômes</CardTitle>
+        <CardTitle>{t("diplomas")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {fields.map((field, index) => (
           <div key={field.id} className="border rounded-lg p-4 space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className="text-lg font-medium">Diplôme {index + 1}</h3>
+              <h3 className="text-lg font-medium">{t("diplomaNumber")} {index + 1}</h3>
               <Button
                 type="button"
                 variant="outline"
@@ -49,28 +51,28 @@ export function DiplomasEditor({ form, fieldsArray }: DiplomasEditorProps) {
               <TextField
                 form={form}
                 name={`diplomas.${index}.name`}
-                placeholder="Ex: Licence en Informatique"
-                label="Nom du diplôme"
+                placeholder={t("diplomaNamePlaceholder")}
+                label={t("diplomaName")}
               />
 
               <TextField
                 form={form}
                 name={`diplomas.${index}.institution`}
-                placeholder="Ex: Université de Paris"
-                label="Établissement"
+                placeholder={t("institutionPlaceholder")}
+                label={t("institution")}
               />
               <div className="grid grid-cols-2 gap-4">
                 <TextField
                   form={form}
                   name={`diplomas.${index}.startDate`}
                   type="month"
-                  label="Date de début"
+                  label={t("startDate")}
                 />
                 <TextField
                   form={form}
                   name={`diplomas.${index}.endDate`}
                   type="month"
-                  label="Date de fin"
+                  label={t("endDate")}
                 />
               </div>
             </div>
@@ -84,7 +86,7 @@ export function DiplomasEditor({ form, fieldsArray }: DiplomasEditorProps) {
           className="w-full"
         >
           <Plus className="h-4 w-4 mr-2" />
-          Ajouter un diplôme
+          {t("addDiploma")}
         </Button>
       </CardContent>
     </Card>

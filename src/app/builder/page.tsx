@@ -15,6 +15,7 @@ import { RatingIconType } from "@/components/ui/rating-system";
 import { CVData } from "@/types/cv";
 import { Form } from "@/components/ui/form";
 import { Toolbar } from "@/components/cv/Toolbar";
+import { LanguageProvider, useLanguage } from "@/context/LanguageContext";
 
 const defaultValues: CVDataForm = {
   personalInfo: {
@@ -33,6 +34,15 @@ const defaultValues: CVDataForm = {
 };
 
 export default function BuilderPage() {
+  return (
+    <LanguageProvider>
+      <BuilderPageContent />
+    </LanguageProvider>
+  );
+}
+
+function BuilderPageContent() {
+  const { t, language } = useLanguage();
   const [skillsIconType, setSkillsIconType] = useState<RatingIconType>("star");
   const [languagesIconType, setLanguagesIconType] = useState<RatingIconType>("heart");
   const [cvData, setCvData] = useState<CVData | null>(null);
@@ -76,7 +86,7 @@ export default function BuilderPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-center mb-8">Générateur de CV ATS-Friendly</h1>
+        <h1 className="text-3xl font-bold text-center mb-8">{t("cvGenerator")}</h1>
         
         <Form {...form}>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -124,6 +134,7 @@ export default function BuilderPage() {
                   skillsIconType={skillsIconType}
                   languagesIconType={languagesIconType}
                   onSubmit={form.handleSubmit(onSubmit)}
+                  language={language}
                 />
                 
                 <div>

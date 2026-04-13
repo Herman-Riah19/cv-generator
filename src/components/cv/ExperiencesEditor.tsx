@@ -10,6 +10,7 @@ import {
 import { Plus, Trash2 } from "lucide-react";
 import { CVDataForm } from "@/lib/validation";
 import { AIGenerateButton } from "./Toolbar";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ExperiencesEditorProps {
   form: UseFormReturn<CVDataForm>;
@@ -20,6 +21,7 @@ export function ExperiencesEditor({
   form,
   fieldsArray,
 }: ExperiencesEditorProps) {
+  const { t } = useLanguage();
   const { fields, append } = fieldsArray;
 
   const addExperience = () => {
@@ -36,7 +38,7 @@ export function ExperiencesEditor({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Expériences Professionnelles</CardTitle>
+        <CardTitle>{t("experiences")}</CardTitle>
       </CardHeader>
 
       <CardContent className="space-y-6">
@@ -77,7 +79,7 @@ export function ExperiencesEditor({
             <div key={field.id} className="border rounded-lg p-4 space-y-4">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-medium">
-                  Expérience {expIndex + 1}
+                  {t("experienceNumber")} {expIndex + 1}
                 </h3>
                 <Button
                   type="button"
@@ -93,31 +95,31 @@ export function ExperiencesEditor({
                 <TextField
                   form={form}
                   name={`experiences.${expIndex}.position`}
-                  label="Poste"
+                  label={t("position")}
                 />
                 <TextField
                   form={form}
                   name={`experiences.${expIndex}.company`}
-                  label="Société"
+                  label={t("company")}
                 />
                 <TextField
                   form={form}
                   name={`experiences.${expIndex}.startDate`}
                   type="month"
-                  label="Date de début"
+                  label={t("startDate")}
                 />
                 <TextField
                   form={form}
                   name={`experiences.${expIndex}.endDate`}
                   type="month"
-                  label="Date de fin"
+                  label={t("endDate")}
                 />
               </div>
 
               {/* DESCRIPTIONS */}
               <div>
                 <label className="text-sm font-medium mb-2 block">
-                  Description des tâches
+                  {t("taskDescription")}
                 </label>
 
                 <div className="space-y-2">
@@ -126,7 +128,7 @@ export function ExperiencesEditor({
                       <TextField
                         form={form}
                         name={`experiences.${expIndex}.description.${descIndex}`}
-                        placeholder="Description d'une tâche..."
+                        placeholder={t("taskDescriptionPlaceholder")}
                         className="flex-1"
                       />
                       <Button
@@ -149,7 +151,7 @@ export function ExperiencesEditor({
                       onClick={() => addDescriptionItem()}
                     >
                       <Plus className="h-4 w-4 mr-2" />
-                      Ajouter une tâche
+                      {t("addTask")}
                     </Button>
 
                     <AIGenerateButton
@@ -171,7 +173,7 @@ export function ExperiencesEditor({
           className="w-full"
         >
           <Plus className="h-4 w-4 mr-2" />
-          Ajouter une expérience
+          {t("addExperience")}
         </Button>
       </CardContent>
     </Card>

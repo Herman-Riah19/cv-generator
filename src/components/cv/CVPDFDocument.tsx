@@ -9,6 +9,8 @@ import {
   Path,
 } from "@react-pdf/renderer";
 import { CVData } from "@/types/cv";
+import { Language, TranslationKey } from "@/data/translations";
+import { translations } from "@/data/translations";
 
 Font.register({
   family: "Geist",
@@ -31,6 +33,7 @@ Font.register({
 const styles = StyleSheet.create({
   page: {
     padding: 40,
+    paddingBottom: 50,
     fontFamily: "Geist",
     fontSize: 18,
     color: "#1f2937",
@@ -193,27 +196,8 @@ interface CVPDFDocumentProps {
   data: CVData;
   skillsIconType: "star" | "heart" | "circle" | "square" | "triangle" | "check";
   languagesIconType: "star" | "heart" | "circle" | "square" | "triangle" | "check";
+  language?: Language;
 }
-
-const formatDate = (dateString: string) => {
-  if (!dateString) return "";
-  const [year, month] = dateString.split("-");
-  const monthNames = [
-    "Janvier",
-    "Février",
-    "Mars",
-    "Avril",
-    "Mai",
-    "Juin",
-    "Juillet",
-    "Août",
-    "Septembre",
-    "Octobre",
-    "Novembre",
-    "Décembre",
-  ];
-  return `${monthNames[parseInt(month) - 1]} ${year}`;
-};
 
 const ICON_SIZE = 12;
 const FILLED_COLOR = "#111827";
@@ -314,7 +298,19 @@ export function CVPDFDocument({
   data,
   skillsIconType,
   languagesIconType,
+  language = "fr",
 }: CVPDFDocumentProps) {
+  const t = (key: TranslationKey) => translations[language][key];
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "";
+    const [year, month] = dateString.split("-");
+    const monthNames = language === "fr"
+      ? ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+      : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    return `${monthNames[parseInt(month) - 1]} ${year}`;
+  };
+
   const renderRating = (
     level: number,
     iconType: "star" | "heart" | "circle" | "square" | "triangle" | "check"
@@ -381,7 +377,7 @@ export function CVPDFDocument({
           <View style={styles.separator} />
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Résumé</Text>
+            <Text style={styles.sectionTitle}>{t("summary")}</Text>
             {data.personalInfo.description && (
               <Text style={styles.summaryText}>
                 {data.personalInfo.description}
@@ -392,7 +388,7 @@ export function CVPDFDocument({
 
         {data.skills.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Compétences Techniques</Text>
+            <Text style={styles.sectionTitle}>{t("technicalSkills")}</Text>
             <View style={styles.gridContainer}>
               {data.skills
                 .filter((skill) => skill.name.trim())
@@ -412,7 +408,7 @@ export function CVPDFDocument({
 
         {data.languages && data.languages.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Langues</Text>
+            <Text style={styles.sectionTitle}>{t("languages")}</Text>
             <View style={styles.gridContainer}>
               {data.languages
                 .filter((lang) => lang.name.trim())
@@ -432,14 +428,14 @@ export function CVPDFDocument({
 
         {data.diplomas.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Formation</Text>
+            <Text style={styles.sectionTitle}>{t("education")}</Text>
             {data.diplomas.map((diploma) => (
               <View key={diploma.id} style={styles.diplomaItem}>
                 <View style={styles.diplomaHeader}>
                   <Text style={styles.diplomaName}>{diploma.name}</Text>
                   <Text style={styles.diplomaDate}>
                     {formatDate(diploma.startDate)} -{" "}
-                    {formatDate(diploma.endDate as string) || "Présent"}
+                    {formatDate(diploma.endDate as string) || t("present")}
                   </Text>
                 </View>
                 <Text style={styles.diplomaInstitution}>
@@ -455,7 +451,7 @@ export function CVPDFDocument({
         {data.experiences.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>
-              Expérience Professionnelle
+              {t("professionalExperience")}
             </Text>
             {data.experiences.map((exp, idx) => (
               <View key={idx} style={styles.experienceItem}>
@@ -466,7 +462,7 @@ export function CVPDFDocument({
                     </Text>
                     <Text style={styles.experienceDate}>
                       {formatDate(exp.startDate)} -{" "}
-                      {formatDate(exp.endDate as string) || "Présent"}
+                      {formatDate(exp.endDate as string) || t("present")}
                     </Text>
                   </View>
                   <Text style={styles.experienceCompany}>{exp.company}</Text>

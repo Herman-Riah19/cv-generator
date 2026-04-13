@@ -28,7 +28,9 @@ import {
   ChevronUp,
   Server,
   Upload,
+  Languages,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const AVAILABLE_THEMES = [
   { id: "default", name: "Default (ATS-Friendly)", package: "default" },
@@ -60,6 +62,7 @@ export function Toolbar({ data, onThemeChange, onImport }: ToolbarProps) {
     "idle" | "success" | "error"
   >("idle");
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const { language, toggleLanguage } = useLanguage();
 
   const handleExportJSON = async () => {
     setIsExporting(true);
@@ -118,6 +121,24 @@ export function Toolbar({ data, onThemeChange, onImport }: ToolbarProps) {
 
   return (
     <div className="space-y-4">
+      {/* Language Toggle */}
+      <div className="bg-white rounded-lg border p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Languages className="h-5 w-5" />
+            <span className="font-medium">Langue</span>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={toggleLanguage}
+            className="min-w-[80px]"
+          >
+            {language === "fr" ? "FR" : "EN"}
+          </Button>
+        </div>
+      </div>
+
       {/* Theme Selection */}
       <div className="bg-white rounded-lg border p-4">
         <h3 className="font-medium mb-3">Thème du CV</h3>

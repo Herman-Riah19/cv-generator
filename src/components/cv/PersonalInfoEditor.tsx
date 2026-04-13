@@ -4,66 +4,68 @@ import { TextField } from "@/components/ui/text-field";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UseFormReturn } from "react-hook-form";
 import { CVDataForm } from "@/lib/validation";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface PersonalInfoEditorProps {
   form: UseFormReturn<CVDataForm>;
 }
 
 export function PersonalInfoEditor({ form }: PersonalInfoEditorProps) {
+  const { t } = useLanguage();
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Informations Personnelles</CardTitle>
+        <CardTitle>{t("personalInfo")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <TextField
           form={form}
           name="personalInfo.name"
-          placeholder="Votre nom complet"
-          label="Nom"
+          placeholder={t("namePlaceholder")}
+          label={t("name")}
         />
         
         <TextField
           form={form}
           name="personalInfo.email"
           type="email"
-          placeholder="votre.email@example.com"
-          label="Email"
+          placeholder={t("emailPlaceholder")}
+          label={t("email")}
         />
 
         <TextField
           form={form}
           name="personalInfo.poste"
-          placeholder="Votre poste actuel"
-          label="Poste"
+          placeholder={t("positionPlaceholder")}
+          label={t("position")}
         />
 
         <TextField
           form={form}
           name="personalInfo.portfolio"
-          placeholder="Votre portfolio"
-          label="Portfolio"
+          placeholder={t("portfolioPlaceholder")}
+          label={t("portfolio")}
         />
 
         <TextField
           form={form}
           name="personalInfo.adresse"
-          placeholder="Votre adresse"
-          label="Adresse"
+          placeholder={t("addressPlaceholder")}
+          label={t("address")}
         />
 
         <TextField
           form={form}
           name="personalInfo.phone"
-          placeholder="Votre numéro de téléphone"
-          label="Téléphone"
+          placeholder={t("phonePlaceholder")}
+          label={t("phone")}
         />
         
         <TextField
           form={form}
           name="personalInfo.description"
-          placeholder="Une brève description de vous-même..."
-          label="Description"
+          placeholder={t("descriptionPlaceholder")}
+          label={t("description")}
           textarea
           rows={4}
         />

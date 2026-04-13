@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
 import { pdf } from "@react-pdf/renderer";
 import { CVPDFDocument } from "./CVPDFDocument";
+import { Language } from "@/data/translations";
 
 interface PDFGeneratorProps {
   data: CVData;
   skillsIconType: "star" | "heart" | "circle" | "square" | "triangle" | "check";
   languagesIconType: "star" | "heart" | "circle" | "square" | "triangle" | "check";
   onSubmit: () => void;
+  language?: Language;
 }
 
 export function PDFGenerator({
@@ -18,14 +20,17 @@ export function PDFGenerator({
   skillsIconType,
   languagesIconType,
   onSubmit,
+  language = "fr",
 }: PDFGeneratorProps) {
   const generatePDF = async () => {
     try {
+      console.log(data)
       const blob = await pdf(
         <CVPDFDocument
           data={data}
           skillsIconType={skillsIconType}
           languagesIconType={languagesIconType}
+          language={language}
         />
       ).toBlob();
 
