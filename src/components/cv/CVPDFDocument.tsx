@@ -33,13 +33,12 @@ Font.register({
 const styles = StyleSheet.create({
   page: {
     padding: 40,
-    paddingBottom: 50,
     fontFamily: "Geist",
     fontSize: 18,
     color: "#1f2937",
   },
   header: {
-    marginBottom: 16,
+    marginBottom: 8,
   },
   name: {
     fontSize: 20,
@@ -105,12 +104,12 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   filledIcon: {
-    width: 10,
-    height: 10,
+    width: 8,
+    height: 8,
   },
   emptyIcon: {
-    width: 10,
-    height: 10,
+    width: 8,
+    height: 8,
   },
   diplomaItem: {
     marginBottom: 10,
@@ -195,11 +194,17 @@ const styles = StyleSheet.create({
 interface CVPDFDocumentProps {
   data: CVData;
   skillsIconType: "star" | "heart" | "circle" | "square" | "triangle" | "check";
-  languagesIconType: "star" | "heart" | "circle" | "square" | "triangle" | "check";
+  languagesIconType:
+    | "star"
+    | "heart"
+    | "circle"
+    | "square"
+    | "triangle"
+    | "check";
   language?: Language;
 }
 
-const ICON_SIZE = 12;
+const ICON_SIZE = 8;
 const FILLED_COLOR = "#111827";
 const EMPTY_COLOR = "#d1d5db";
 
@@ -305,15 +310,42 @@ export function CVPDFDocument({
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
     const [year, month] = dateString.split("-");
-    const monthNames = language === "fr"
-      ? ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
-      : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthNames =
+      language === "fr"
+        ? [
+            "Janvier",
+            "Février",
+            "Mars",
+            "Avril",
+            "Mai",
+            "Juin",
+            "Juillet",
+            "Août",
+            "Septembre",
+            "Octobre",
+            "Novembre",
+            "Décembre",
+          ]
+        : [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ];
     return `${monthNames[parseInt(month) - 1]} ${year}`;
   };
 
   const renderRating = (
     level: number,
-    iconType: "star" | "heart" | "circle" | "square" | "triangle" | "check"
+    iconType: "star" | "heart" | "circle" | "square" | "triangle" | "check",
   ) => {
     const IconComponent = iconComponents[iconType];
     return (
@@ -327,7 +359,7 @@ export function CVPDFDocument({
 
   const renderLanguageRating = (
     level: number,
-    iconType: "star" | "heart" | "circle" | "square" | "triangle" | "check"
+    iconType: "star" | "heart" | "circle" | "square" | "triangle" | "check",
   ) => {
     const IconComponent = iconComponents[iconType];
     return (
@@ -376,14 +408,14 @@ export function CVPDFDocument({
 
           <View style={styles.separator} />
 
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{t("summary")}</Text>
-            {data.personalInfo.description && (
+          {data.personalInfo.description && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>{t("summary")}</Text>
               <Text style={styles.summaryText}>
                 {data.personalInfo.description}
               </Text>
-            )}
-          </View>
+            </View>
+          )}
         </View>
 
         {data.skills.length > 0 && (
@@ -403,8 +435,6 @@ export function CVPDFDocument({
             </View>
           </View>
         )}
-
-        <View style={styles.separator} />
 
         {data.languages && data.languages.length > 0 && (
           <View style={styles.section}>

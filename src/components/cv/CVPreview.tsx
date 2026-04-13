@@ -24,13 +24,40 @@ export function CVPreview({
   languagesIconType,
 }: CVPreviewProps) {
   const { t, language } = useLanguage();
-  
+
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
     const [year, month] = dateString.split("-");
-    const monthNames = language === "fr" 
-      ? ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
-      : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthNames =
+      language === "fr"
+        ? [
+            "Janvier",
+            "Février",
+            "Mars",
+            "Avril",
+            "Mai",
+            "Juin",
+            "Juillet",
+            "Août",
+            "Septembre",
+            "Octobre",
+            "Novembre",
+            "Décembre",
+          ]
+        : [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+          ];
     return `${monthNames[parseInt(month) - 1]} ${year}`;
   };
 
@@ -75,16 +102,16 @@ export function CVPreview({
         </div>
         <Separator />
 
-        <div className="flex flex-col">
-          <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
-            {t("summary")}
-          </h2>
-          {data.personalInfo.description && (
+        {data.personalInfo.description && (
+          <div className="flex flex-col">
+            <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
+              {t("summary")}
+            </h2>
             <p className="text-lg text-gray-700 leading-relaxed">
               {data.personalInfo.description}
             </p>
-          )}
-        </div>
+          </div>
+        )}
       </header>
 
       {/* Main Content Structure for ATS */}
