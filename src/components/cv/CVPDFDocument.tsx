@@ -32,9 +32,9 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    padding: 40,
+    padding: 30,
     fontFamily: "Geist",
-    fontSize: 18,
+    fontSize: 20,
     color: "#1f2937",
   },
   header: {
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   contactItem: {
-    fontSize: 9,
+    fontSize: 10,
     color: "#4b5563",
   },
   contactLabel: {
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     color: "#111827",
   },
   summaryText: {
-    fontSize: 10,
+    fontSize: 11,
     color: "#374151",
     lineHeight: 1.5,
   },
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#374151",
     fontWeight: 500,
-    marginRight: 8,
+    marginRight: 4,
   },
 });
 
