@@ -85,36 +85,34 @@ function BuilderPageContent() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-center mb-8">{t("cvGenerator")}</h1>
-        
+      <div className="container mx-auto px-2 py-2">
         <Form {...form}>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Editor Section */}
-            <div className="space-y-6">
+            <div className="space-y-6 sticky top-8 h-[95vh] overflow-auto">
               <PersonalInfoEditor form={form} />
-              
-              <SkillsEditor 
-                form={form} 
+
+              <SkillsEditor
+                form={form}
                 fieldsArray={skillsArray}
                 iconType={skillsIconType}
                 onIconTypeChange={setSkillsIconType}
               />
 
-              <LanguagesEditor 
-                form={form} 
+              <LanguagesEditor
+                form={form}
                 fieldsArray={languagesArray}
                 iconType={languagesIconType}
                 onIconTypeChange={setLanguagesIconType}
               />
-              
-              <DiplomasEditor 
-                form={form} 
+
+              <DiplomasEditor
+                form={form}
                 fieldsArray={diplomasArray}
               />
-              
-              <ExperiencesEditor 
-                form={form} 
+
+              <ExperiencesEditor
+                form={form}
                 fieldsArray={experiencesArray}
               />
             </div>
@@ -122,24 +120,24 @@ function BuilderPageContent() {
             {/* Preview Section */}
             <div className="lg:col-span-2 space-y-8">
               {cvData && (
-                <Toolbar 
-                  data={cvData} 
-                  onImport={(importedData) => form.reset(importedData)} 
+                <Toolbar
+                  data={cvData}
+                  onImport={(importedData) => form.reset(importedData)}
                 />
               )}
-              
+
               <div className="sticky top-8 space-y-4">
-                <PDFGenerator 
+                <PDFGenerator
                   data={form.getValues() as CVData}
                   skillsIconType={skillsIconType}
                   languagesIconType={languagesIconType}
                   onSubmit={form.handleSubmit(onSubmit)}
                   language={language}
                 />
-                
+
                 <div>
-                  <CVPreview 
-                    data={form.getValues()} 
+                  <CVPreview
+                    data={form.getValues()}
                     skillsIconType={skillsIconType}
                     languagesIconType={languagesIconType}
                   />
