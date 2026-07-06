@@ -32,7 +32,7 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    padding: 30,
+    padding: 20,
     fontFamily: "Geist",
     fontSize: 20,
     color: "#1f2937",
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   separator: {
     borderBottomWidth: 1,
     borderBottomColor: "#d1d5db",
-    marginVertical: 8,
+    marginVertical: 5,
   },
   contactGrid: {
     flexDirection: "row",
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   descriptionItem: {
-    fontSize: 10,
+    fontSize: 11,
     color: "#374151",
     marginBottom: 2,
   },
@@ -195,12 +195,12 @@ interface CVPDFDocumentProps {
   data: CVData;
   skillsIconType: "star" | "heart" | "circle" | "square" | "triangle" | "check";
   languagesIconType:
-    | "star"
-    | "heart"
-    | "circle"
-    | "square"
-    | "triangle"
-    | "check";
+  | "star"
+  | "heart"
+  | "circle"
+  | "square"
+  | "triangle"
+  | "check";
   language?: Language;
 }
 
@@ -313,33 +313,33 @@ export function CVPDFDocument({
     const monthNames =
       language === "fr"
         ? [
-            "Janvier",
-            "Février",
-            "Mars",
-            "Avril",
-            "Mai",
-            "Juin",
-            "Juillet",
-            "Août",
-            "Septembre",
-            "Octobre",
-            "Novembre",
-            "Décembre",
-          ]
+          "Janvier",
+          "Février",
+          "Mars",
+          "Avril",
+          "Mai",
+          "Juin",
+          "Juillet",
+          "Août",
+          "Septembre",
+          "Octobre",
+          "Novembre",
+          "Décembre",
+        ]
         : [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ];
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
     return `${monthNames[parseInt(month) - 1]} ${year}`;
   };
 
