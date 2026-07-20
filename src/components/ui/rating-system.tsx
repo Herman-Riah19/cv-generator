@@ -94,7 +94,7 @@ export function RatingSystem({
         ))}
       </div>
       {showNumber && (
-        <span className="text-sm text-gray-500 min-w-[30px]">
+        <span className="text-sm text-gray-500 min-w-7.5">
           {level}/{maxLevel}
         </span>
       )}

@@ -9,16 +9,12 @@ import { Language } from "@/data/translations";
 
 interface PDFGeneratorProps {
   data: CVData;
-  skillsIconType: "star" | "heart" | "circle" | "square" | "triangle" | "check";
-  languagesIconType: "star" | "heart" | "circle" | "square" | "triangle" | "check";
   onSubmit: () => void;
   language?: Language;
 }
 
 export function PDFGenerator({
   data,
-  skillsIconType,
-  languagesIconType,
   onSubmit,
   language = "fr",
 }: PDFGeneratorProps) {
@@ -28,8 +24,6 @@ export function PDFGenerator({
       const blob = await pdf(
         <CVPDFDocument
           data={data}
-          skillsIconType={skillsIconType}
-          languagesIconType={languagesIconType}
           language={language}
         />
       ).toBlob();

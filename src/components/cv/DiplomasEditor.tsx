@@ -7,6 +7,7 @@ import { UseFieldArrayReturn, UseFormReturn } from "react-hook-form";
 import { Plus, Trash2 } from "lucide-react";
 import { CVDataForm } from "@/lib/validation";
 import { useLanguage } from "@/context/LanguageContext";
+import { generateId } from "@/lib/json-resume";
 
 interface DiplomasEditorProps {
   form: UseFormReturn<CVDataForm>;
@@ -19,7 +20,7 @@ export function DiplomasEditor({ form, fieldsArray }: DiplomasEditorProps) {
 
   const addDiploma = () => {
     append({
-      id: Date.now().toString(),
+      id: generateId(),
       name: "",
       institution: "",
       startDate: "",

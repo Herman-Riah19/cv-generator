@@ -4,12 +4,14 @@ export const skillSchema = z.object({
   id: z.string(),
   name: z.string().min(1, "Le nom de la compétence est requis"),
   level: z.number().min(1).max(5),
+  iconType: z.string().optional()
 });
 
 export const languageSchema = z.object({
   id: z.string(),
   name: z.string().min(1, "Le nom de la langue est requis"),
   level: z.number().min(1).max(5),
+  iconType: z.string().optional()
 });
 
 export const diplomaSchema = z.object({
@@ -39,12 +41,19 @@ export const personalInfoSchema = z.object({
   description: z.string().optional(),
 });
 
+export const softSkillSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1, "Votre point fort est requis"),
+});
+
 export const cvDataSchema = z.object({
   personalInfo: personalInfoSchema,
   skills: z.array(skillSchema),
   languages: z.array(languageSchema),
   diplomas: z.array(diplomaSchema),
   experiences: z.array(experienceSchema),
+  softSkills: z.array(softSkillSchema),
+  theme: z.string().optional(),
 });
 
 export type CVDataForm = z.infer<typeof cvDataSchema>;

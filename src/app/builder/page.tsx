@@ -16,6 +16,8 @@ import { CVData } from "@/types/cv";
 import { Form } from "@/components/ui/form";
 import { Toolbar } from "@/components/cv/Toolbar";
 import { LanguageProvider, useLanguage } from "@/context/LanguageContext";
+import { SoftSkillsEditor } from "@/components/cv/SoftSkillEditor";
+import { themeList } from "@/themes";
 
 const defaultValues: CVDataForm = {
   personalInfo: {
@@ -31,6 +33,8 @@ const defaultValues: CVDataForm = {
   languages: [],
   diplomas: [],
   experiences: [],
+  softSkills: [],
+  theme: "default",
 };
 
 export default function BuilderPage() {
@@ -80,8 +84,12 @@ function BuilderPageContent() {
     name: "experiences",
   });
 
-  const onSubmit = (data: CVDataForm) => {
-  };
+  const softSkillsArray = useFieldArray({
+    control: form.control,
+    name: "softSkills",
+  });
+
+  const onSubmit = (data: CVDataForm) => {};
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -106,15 +114,10 @@ function BuilderPageContent() {
                 onIconTypeChange={setLanguagesIconType}
               />
 
-              <DiplomasEditor
-                form={form}
-                fieldsArray={diplomasArray}
-              />
+              <SoftSkillsEditor form={form} fieldsArray={softSkillsArray} />
+              <DiplomasEditor form={form} fieldsArray={diplomasArray} />
 
-              <ExperiencesEditor
-                form={form}
-                fieldsArray={experiencesArray}
-              />
+              <ExperiencesEditor form={form} fieldsArray={experiencesArray} />
             </div>
 
             {/* Preview Section */}
@@ -129,8 +132,6 @@ function BuilderPageContent() {
               <div className="sticky top-8 space-y-4">
                 <PDFGenerator
                   data={form.getValues() as CVData}
-                  skillsIconType={skillsIconType}
-                  languagesIconType={languagesIconType}
                   onSubmit={form.handleSubmit(onSubmit)}
                   language={language}
                 />
@@ -138,8 +139,6 @@ function BuilderPageContent() {
                 <div>
                   <CVPreview
                     data={form.getValues()}
-                    skillsIconType={skillsIconType}
-                    languagesIconType={languagesIconType}
                   />
                 </div>
               </div>

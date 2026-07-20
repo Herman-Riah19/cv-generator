@@ -11,6 +11,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { CVDataForm } from "@/lib/validation";
 import { AIGenerateButton } from "./Toolbar";
 import { useLanguage } from "@/context/LanguageContext";
+import { generateId } from "@/lib/json-resume";
 
 interface ExperiencesEditorProps {
   form: UseFormReturn<CVDataForm>;
@@ -26,7 +27,7 @@ export function ExperiencesEditor({
 
   const addExperience = () => {
     append({
-      id: Date.now().toString(),
+      id: generateId(),
       position: "",
       company: "",
       startDate: "",

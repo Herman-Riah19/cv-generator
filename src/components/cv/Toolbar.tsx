@@ -132,7 +132,7 @@ export function Toolbar({ data, onThemeChange, onImport }: ToolbarProps) {
             variant="outline"
             size="sm"
             onClick={toggleLanguage}
-            className="min-w-[80px]"
+            className="min-w-20"
           >
             {language === "fr" ? "FR" : "EN"}
           </Button>

@@ -8,6 +8,7 @@ import { UseFieldArrayReturn, UseFormReturn } from "react-hook-form";
 import { Plus, Trash2 } from "lucide-react";
 import { CVDataForm } from "@/lib/validation";
 import { useLanguage } from "@/context/LanguageContext";
+import { generateId } from "@/lib/json-resume";
 
 interface LanguagesEditorProps {
   form: UseFormReturn<CVDataForm>;
@@ -27,9 +28,17 @@ export function LanguagesEditor({
 
   const addLanguage = () => {
     append({
-      id: Date.now().toString(),
+      id: generateId(),
       name: "",
       level: 3,
+      iconType,
+    });
+  };
+
+  const handleIconTypeChange = (type: RatingIconType) => {
+    onIconTypeChange(type);
+    fields.forEach((_, index) => {
+      form.setValue(`languages.${index}.iconType`, type);
     });
   };
 
@@ -43,7 +52,7 @@ export function LanguagesEditor({
           <span className="text-sm font-medium">{t("iconType")}</span>
           <select
             value={iconType}
-            onChange={(e) => onIconTypeChange(e.target.value as RatingIconType)}
+            onChange={(e) => handleIconTypeChange(e.target.value as RatingIconType)}
             className="px-2 py-1 border rounded text-sm"
           >
             <option value="star">{t("iconType") === "Type d'icône:" ? "Étoile" : "Star"}</option>

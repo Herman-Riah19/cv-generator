@@ -5,12 +5,11 @@ import {
   View,
   StyleSheet,
   Font,
-  Svg,
-  Path,
 } from "@react-pdf/renderer";
 import { CVData } from "@/types/cv";
 import { Language, TranslationKey } from "@/data/translations";
 import { translations } from "@/data/translations";
+import { iconComponents, RatingIconType } from "../pdf-icons";
 
 Font.register({
   family: "Geist",
@@ -32,7 +31,8 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 25,
     fontFamily: "Geist",
     fontSize: 20,
     color: "#1f2937",
@@ -52,16 +52,16 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     textAlign: "center",
     color: "#4b5563",
-    marginBottom: 8,
+    marginBottom: 4,
   },
   separator: {
     borderBottomWidth: 1,
     borderBottomColor: "#d1d5db",
-    marginVertical: 5,
+    marginVertical: 3,
   },
   contactGrid: {
     flexDirection: "row",
-    marginBottom: 8,
+    marginBottom: 4,
   },
   contactColumn: {
     flex: 1,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     textTransform: "uppercase",
     letterSpacing: 1,
-    marginBottom: 8,
+    marginBottom: 4,
     color: "#111827",
   },
   summaryText: {
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     height: 8,
   },
   diplomaItem: {
-    marginBottom: 10,
+    marginBottom: 6,
   },
   diplomaHeader: {
     flexDirection: "row",
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   descriptionList: {
-    marginLeft: 8,
+    marginLeft: 4,
   },
   descriptionItem: {
     fontSize: 11,
@@ -189,6 +189,14 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     marginRight: 4,
   },
+  softSkillItem: {
+    fontSize: 10,
+    color: "#ffffff",
+    backgroundColor: "#111827",
+    borderRadius: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  }
 });
 
 interface CVPDFDocumentProps {
@@ -204,105 +212,8 @@ interface CVPDFDocumentProps {
   language?: Language;
 }
 
-const ICON_SIZE = 8;
-const FILLED_COLOR = "#111827";
-const EMPTY_COLOR = "#d1d5db";
-
-const StarIcon = ({ filled }: { filled: boolean }) => (
-  <Svg width={ICON_SIZE} height={ICON_SIZE} viewBox="0 0 24 24">
-    <Path
-      d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-      fill={filled ? FILLED_COLOR : "none"}
-      stroke={filled ? FILLED_COLOR : EMPTY_COLOR}
-      strokeWidth={2}
-      strokeLinejoin="round"
-      strokeLinecap="round"
-    />
-  </Svg>
-);
-
-const HeartIcon = ({ filled }: { filled: boolean }) => (
-  <Svg width={ICON_SIZE} height={ICON_SIZE} viewBox="0 0 24 24">
-    <Path
-      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-      fill={filled ? FILLED_COLOR : "none"}
-      stroke={filled ? FILLED_COLOR : EMPTY_COLOR}
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </Svg>
-);
-
-const CircleIcon = ({ filled }: { filled: boolean }) => (
-  <Svg width={ICON_SIZE} height={ICON_SIZE} viewBox="0 0 24 24">
-    <Path
-      d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
-      fill={filled ? FILLED_COLOR : "none"}
-      stroke={filled ? FILLED_COLOR : EMPTY_COLOR}
-      strokeWidth={2}
-    />
-  </Svg>
-);
-
-const SquareIcon = ({ filled }: { filled: boolean }) => (
-  <Svg width={ICON_SIZE} height={ICON_SIZE} viewBox="0 0 24 24">
-    <Path
-      d="M3 3h18v18H3V3z"
-      fill={filled ? FILLED_COLOR : "none"}
-      stroke={filled ? FILLED_COLOR : EMPTY_COLOR}
-      strokeWidth={2}
-    />
-  </Svg>
-);
-
-const TriangleIcon = ({ filled }: { filled: boolean }) => (
-  <Svg width={ICON_SIZE} height={ICON_SIZE} viewBox="0 0 24 24">
-    <Path
-      d="M12 2L2 22h20L12 2z"
-      fill={filled ? FILLED_COLOR : "none"}
-      stroke={filled ? FILLED_COLOR : EMPTY_COLOR}
-      strokeWidth={2}
-      strokeLinejoin="round"
-    />
-  </Svg>
-);
-
-const CheckIcon = ({ filled }: { filled: boolean }) => (
-  <Svg width={ICON_SIZE} height={ICON_SIZE} viewBox="0 0 24 24">
-    {filled ? (
-      <Path
-        d="M20 6L9 17l-5-5"
-        fill="none"
-        stroke={FILLED_COLOR}
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    ) : (
-      <Path
-        d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
-        fill="none"
-        stroke={EMPTY_COLOR}
-        strokeWidth={2}
-      />
-    )}
-  </Svg>
-);
-
-const iconComponents = {
-  star: StarIcon,
-  heart: HeartIcon,
-  circle: CircleIcon,
-  square: SquareIcon,
-  triangle: TriangleIcon,
-  check: CheckIcon,
-};
-
 export function CVPDFDocument({
   data,
-  skillsIconType,
-  languagesIconType,
   language = "fr",
 }: CVPDFDocumentProps) {
   const t = (key: TranslationKey) => translations[language][key];
@@ -428,7 +339,7 @@ export function CVPDFDocument({
                   <View key={skill.id} style={styles.gridItem}>
                     <View style={styles.skillItemContainer}>
                       <Text style={styles.skillName}>{skill.name}</Text>
-                      {renderRating(skill.level, skillsIconType)}
+                      {renderRating(skill.level, skill.iconType as RatingIconType || "star")}
                     </View>
                   </View>
                 ))}
@@ -446,7 +357,7 @@ export function CVPDFDocument({
                   <View key={language.id} style={styles.gridItem}>
                     <View style={styles.skillItemContainer}>
                       <Text style={styles.skillName}>{language.name}</Text>
-                      {renderLanguageRating(language.level, languagesIconType)}
+                      {renderLanguageRating(language.level, language.iconType as RatingIconType || "star")}
                     </View>
                   </View>
                 ))}
@@ -476,6 +387,23 @@ export function CVPDFDocument({
           </View>
         )}
 
+        <View style={styles.separator} />
+        {data.softSkills && data.softSkills.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t("softSkills")}</Text>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+              {data.softSkills
+                .filter((skill) => skill.name.trim())
+                .map((skill) => (
+                  <View key={skill.id}>
+                    <Text style={styles.softSkillItem}>
+                      {skill.name}
+                    </Text>
+                  </View>
+                ))}
+            </View>
+          </View>
+        )}
         <View style={styles.separator} />
 
         {data.experiences.length > 0 && (

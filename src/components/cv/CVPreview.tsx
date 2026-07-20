@@ -1,29 +1,20 @@
 "use client";
 
 import { CVData } from "@/types/cv";
-import { RatingIcon } from "@/components/ui/rating-system";
+import { RatingIcon, RatingIconType } from "@/components/ui/rating-system";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/context/LanguageContext";
+import { Badge } from "@/components/ui/badge";
+import { getTheme } from "@/themes";
 
 interface CVPreviewProps {
   data: CVData;
-  skillsIconType: "star" | "heart" | "circle" | "square" | "triangle" | "check";
-  languagesIconType:
-    | "star"
-    | "heart"
-    | "circle"
-    | "square"
-    | "triangle"
-    | "check";
 }
 
-export function CVPreview({
-  data,
-  skillsIconType,
-  languagesIconType,
-}: CVPreviewProps) {
+export function CVPreview({ data }: CVPreviewProps) {
   const { t, language } = useLanguage();
+  const theme = getTheme(data.theme || "default");
 
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
@@ -133,7 +124,7 @@ export function CVPreview({
                       {Array.from({ length: 5 }, (_, i) => (
                         <RatingIcon
                           key={i}
-                          type={skillsIconType}
+                          type={(skill.iconType as RatingIconType) || "star"}
                           filled={i < skill.level}
                           size={16}
                         />
@@ -165,7 +156,7 @@ export function CVPreview({
                       {Array.from({ length: 5 }, (_, i) => (
                         <RatingIcon
                           key={i}
-                          type={languagesIconType}
+                          type={(language.iconType as RatingIconType) || "star"}
                           filled={i < language.level}
                           size={16}
                         />
@@ -179,7 +170,6 @@ export function CVPreview({
 
         <Separator />
 
-        {/* Diplomas Section */}
         {data.diplomas.length > 0 && (
           <section>
             <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
@@ -206,9 +196,32 @@ export function CVPreview({
             </div>
           </section>
         )}
+
         <Separator />
 
-        {/* Experience Section */}
+        {data.softSkills && data.softSkills.length > 0 && (
+          <section>
+            <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
+              {t("softSkills")}
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {data.softSkills
+                .filter((skill) => skill.name.trim())
+                .map((skill, index) => (
+                  <div key={skill.id} className="flex gap-4 py-1">
+                    <Badge
+                      className={`gap-1 text-xl ${theme.preview.badge} border-0`}
+                    >
+                      {skill.name}
+                    </Badge>
+                  </div>
+                ))}
+            </div>
+          </section>
+        )}
+        
+        <Separator />
+        
         {data.experiences.length > 0 && (
           <section>
             <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">

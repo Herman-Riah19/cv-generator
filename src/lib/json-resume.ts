@@ -1,3 +1,4 @@
+import { RatingIconType } from "@/components/ui/rating-system";
 import { CVData } from "@/types/cv";
 
 export interface JSONResumeWork {
@@ -24,11 +25,13 @@ export interface JSONResumeSkill {
   name: string;
   level?: number;
   keywords?: string[];
+  iconType?: string;
 }
 
 export interface JSONResumeLanguage {
   language: string;
   fluency?: string;
+  iconType?: string;
 }
 
 export interface JSONResumeSchema {
@@ -47,6 +50,14 @@ export interface JSONResumeSchema {
   education?: JSONResumeEducation[];
   skills?: JSONResumeSkill[];
   languages?: JSONResumeLanguage[];
+  softSkills?: JSONResumeSoftSkill[];
+  meta?: {
+    theme?: string;
+  };
+}
+
+export interface JSONResumeSoftSkill {
+  name: string;
 }
 
 export function convertToJSONResume(data: CVData): JSONResumeSchema {
@@ -87,6 +98,7 @@ export function convertToJSONResume(data: CVData): JSONResumeSchema {
     .map((skill) => ({
       name: skill.name,
       level: skill.level,
+      iconType: skill.iconType,
     }));
 
   const languages: JSONResumeLanguage[] = data.languages
@@ -94,6 +106,13 @@ export function convertToJSONResume(data: CVData): JSONResumeSchema {
     .map((lang) => ({
       language: lang.name,
       fluency: getFluencyFromLevel(lang.level),
+      iconType: lang.iconType,
+    }));
+  
+    const softSkills: JSONResumeSoftSkill[] = data.softSkills
+    .filter((skill) => skill.name)
+    .map((skill) => ({
+      name: skill.name,
     }));
 
   return {
@@ -102,6 +121,10 @@ export function convertToJSONResume(data: CVData): JSONResumeSchema {
     education: education.length > 0 ? education : undefined,
     skills: skills.length > 0 ? skills : undefined,
     languages: languages.length > 0 ? languages : undefined,
+    softSkills: softSkills.length > 0 ? softSkills : undefined,
+    meta: {
+      theme: data.theme,
+    },
   };
 }
 
@@ -148,12 +171,13 @@ export function downloadJSON(data: unknown, filename: string = "resume.json") {
   URL.revokeObjectURL(url);
 }
 
-function generateId(): string {
+export function generateId(): string {
   return Math.random().toString(36).substring(2, 15);
 }
 
 export function convertFromJSONResume(data: JSONResumeSchema): CVData {
   return {
+    theme: data.meta?.theme || "default",
     personalInfo: {
       name: data.basics?.name || "",
       email: data.basics?.email || "",
@@ -167,11 +191,13 @@ export function convertFromJSONResume(data: JSONResumeSchema): CVData {
       id: generateId(),
       name: skill.name || "",
       level: skill.level || 1,
+      iconType: skill.iconType || "star",
     })),
     languages: (data.languages || []).map((lang) => ({
       id: generateId(),
       name: lang.language || "",
       level: getLevelFromFluency(lang.fluency),
+      iconType: lang.iconType || "star",
     })),
     diplomas: (data.education || []).map((edu) => ({
       id: generateId(),
@@ -188,6 +214,10 @@ export function convertFromJSONResume(data: JSONResumeSchema): CVData {
       endDate: work.endDate,
       description: work.highlights || [],
     })),
+    softSkills: (data.softSkills || []).map((skill) => ({
+      id: generateId(),
+      name: skill.name || "",
+    }))
   };
 }
 
