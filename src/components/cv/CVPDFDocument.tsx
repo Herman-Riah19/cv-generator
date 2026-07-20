@@ -201,14 +201,6 @@ const styles = StyleSheet.create({
 
 interface CVPDFDocumentProps {
   data: CVData;
-  skillsIconType: "star" | "heart" | "circle" | "square" | "triangle" | "check";
-  languagesIconType:
-  | "star"
-  | "heart"
-  | "circle"
-  | "square"
-  | "triangle"
-  | "check";
   language?: Language;
 }
 
