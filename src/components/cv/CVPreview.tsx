@@ -53,7 +53,7 @@ export function CVPreview({ data }: CVPreviewProps) {
   };
 
   return (
-    <div className="w-full mx-auto bg-white p-10 shadow-none border-none">
+    <div className="w-full mx-auto bg-white p-4 sm:p-10 shadow-none border-none">
       {/* Header - ATS Optimized */}
       <header className="mb-8">
         <h1 className="text-3xl text-center font-bold text-gray-900 mb-2">
@@ -65,7 +65,7 @@ export function CVPreview({ data }: CVPreviewProps) {
 
         <Separator />
 
-        <div className="grid grid-cols-2 gap-4 text-md p-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-md p-2">
           <div className="flex flex-col gap-2">
             <span className=" text-gray-600">
               <strong>email:</strong>{" "}
@@ -112,7 +112,7 @@ export function CVPreview({ data }: CVPreviewProps) {
             <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
               {t("technicalSkills")}
             </h2>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {data.skills
                 .filter((skill) => skill.name.trim())
                 .map((skill, index) => (
@@ -144,7 +144,7 @@ export function CVPreview({ data }: CVPreviewProps) {
             <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
               {t("languages")}
             </h2>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {data.languages
                 .filter((lang) => lang.name.trim())
                 .map((language) => (
@@ -179,11 +179,11 @@ export function CVPreview({ data }: CVPreviewProps) {
               {data.diplomas &&
                 data.diplomas.map((diploma) => (
                   <div key={diploma.id} className="mb-4">
-                    <div className="flex justify-between">
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                       <h3 className="text-lg text-gray-900 font-semibold">
                         {diploma.name}
                       </h3>
-                      <p className="text-sm text-gray-600 italic">
+                      <p className="text-sm text-gray-600 italic sm:text-right shrink-0">
                         {formatDate(diploma.startDate)} -{" "}
                         {formatDate(diploma.endDate as string) || t("present")}
                       </p>
@@ -232,11 +232,11 @@ export function CVPreview({ data }: CVPreviewProps) {
                 data.experiences.map((exp, idx) => (
                   <article key={idx}>
                     <div className="mb-2">
-                      <div className="flex justify-between">
+                      <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                         <h3 className="text-xl text-gray-900 font-semibold">
                           {exp.position}
                         </h3>
-                        <p className="text-sm text-gray-600 italic">
+                        <p className="text-sm text-gray-600 italic sm:text-right shrink-0">
                           {formatDate(exp.startDate)} -{" "}
                           {formatDate(exp.endDate as string) || t("present")}
                         </p>

@@ -9,7 +9,7 @@ import {
 } from "react-hook-form";
 import { Plus, Trash2 } from "lucide-react";
 import { CVDataForm } from "@/lib/validation";
-import { AIGenerateButton } from "./Toolbar";
+import { AIGenerateButton } from "./AIGenerateButton";
 import { useLanguage } from "@/context/LanguageContext";
 import { generateId } from "@/lib/json-resume";
 

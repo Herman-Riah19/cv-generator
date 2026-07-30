@@ -93,11 +93,11 @@ function BuilderPageContent() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-2 py-2">
+      <div className="container mx-auto px-2 sm:px-4 py-2">
         <Form {...form}>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
             {/* Editor Section */}
-            <div className="space-y-6 sticky top-8 h-[95vh] overflow-auto">
+            <div className="space-y-6 lg:sticky lg:top-8 lg:h-[95vh] lg:overflow-auto">
               <PersonalInfoEditor form={form} />
 
               <SkillsEditor
@@ -129,7 +129,7 @@ function BuilderPageContent() {
                 />
               )}
 
-              <div className="sticky top-8 space-y-4">
+              <div className="lg:sticky lg:top-8 space-y-4">
                 <PDFGenerator
                   data={form.getValues() as CVData}
                   onSubmit={form.handleSubmit(onSubmit)}
