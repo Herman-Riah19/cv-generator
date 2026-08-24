@@ -45,6 +45,8 @@ export interface JSONResumeSchema {
     location?: {
       address?: string;
     };
+    linkedIn?: string;
+    whatsApp?: string;
   };
   work?: JSONResumeWork[];
   education?: JSONResumeEducation[];
@@ -66,6 +68,8 @@ export function convertToJSONResume(data: CVData): JSONResumeSchema {
     label: data.personalInfo.poste,
     email: data.personalInfo.email,
     phone: data.personalInfo.phone,
+    linkedIn: data.personalInfo.linkedIn,
+    whatsApp: data.personalInfo.whatsApp,
     url: data.personalInfo.portfolio,
     summary: data.personalInfo.description,
     location: {
@@ -185,6 +189,8 @@ export function convertFromJSONResume(data: JSONResumeSchema): CVData {
       portfolio: data.basics?.url || "",
       adresse: data.basics?.location?.address || "",
       phone: data.basics?.phone || "",
+      linkedIn: data.basics?.linkedIn ||"", 
+      whatsApp: data.basics?.whatsApp || "", // WhatsApp is not part of the JSON Resume schema
       description: data.basics?.summary || "",
     },
     skills: (data.skills || []).map((skill) => ({

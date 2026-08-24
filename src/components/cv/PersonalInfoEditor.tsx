@@ -60,6 +60,20 @@ export function PersonalInfoEditor({ form }: PersonalInfoEditorProps) {
           placeholder={t("phonePlaceholder")}
           label={t("phone")}
         />
+
+        <TextField
+          form={form}
+          name="personalInfo.linkedIn"
+          placeholder={t("linkedInPlaceholder")}
+          label={t("linkedIn")}
+        />
+
+        <TextField
+          form={form}
+          name="personalInfo.whatsApp"
+          placeholder={t("whatsAppPlaceholder")}
+          label={t("whatsApp")}
+        />
         
         <TextField
           form={form}

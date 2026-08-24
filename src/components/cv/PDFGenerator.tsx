@@ -29,7 +29,10 @@ export function PDFGenerator({
       ).toBlob();
 
       const fileName = data.personalInfo.name
-        ? `CV_${data.personalInfo.name.replace(/\s+/g, "_")}.pdf`
+        ? `${language === "en" ? "EN_":""}CV_${data.personalInfo.name.replace(/\s+/g, "_")}_${data.personalInfo.poste
+            .replace(/\s+/g, "_")
+            .replace("_-_5_Ans_expérieces", "")
+            .replace("_-_5_years_experiences", "")}.pdf`
         : "CV.pdf";
 
       const url = URL.createObjectURL(blob);

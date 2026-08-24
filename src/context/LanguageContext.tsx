@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Language, TranslationKey, getTranslation } from "@/data/translations";
 
 interface LanguageContextType {
@@ -17,15 +17,28 @@ interface LanguageProviderProps {
   initialLanguage?: Language;
 }
 
+const STORAGE_KEY = "app_language";
+
 export function LanguageProvider({ children, initialLanguage = "fr" }: LanguageProviderProps) {
   const [language, setLanguageState] = useState<Language>(initialLanguage);
 
+  // 1. Charger la langue sauvegardée au montage (Client Side)
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem(STORAGE_KEY) as Language | null;
+    if (savedLanguage && (savedLanguage === "fr" || savedLanguage === "en")) {
+      setLanguageState(savedLanguage);
+    }
+  }, []);
+
+  // 2. Mettre à jour la langue et la persister dans localStorage
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
+    localStorage.setItem(STORAGE_KEY, lang);
   };
 
   const toggleLanguage = () => {
-    setLanguageState((prev) => (prev === "fr" ? "en" : "fr"));
+    const nextLang: Language = language === "fr" ? "en" : "fr";
+    setLanguage(nextLang);
   };
 
   const t = (key: TranslationKey): string => {

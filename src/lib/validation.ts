@@ -38,6 +38,8 @@ export const personalInfoSchema = z.object({
   portfolio: z.string().min(1, "Le portfolio est requis"),
   adresse: z.string().min(1, "L'adresse est requise"),
   phone: z.string().min(1, "Le numéro de téléphone est requis"),
+  linkedIn: z.string().min(1, "Le numéro de LinkedIn est requis"),
+  whatsApp: z.string().min(1, "Le numéro de WhatsApp est requis"),
   description: z.string().optional(),
 });
 

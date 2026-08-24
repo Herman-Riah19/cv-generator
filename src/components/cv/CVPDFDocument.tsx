@@ -31,14 +31,14 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    paddingHorizontal: 20,
-    paddingVertical: 25,
+    paddingHorizontal: 40,
+    paddingVertical: 30,
     fontFamily: "Geist",
     fontSize: 20,
-    color: "#1f2937",
+    color: "#111827",
   },
   header: {
-    marginBottom: 8,
+    marginBottom: 10,
   },
   name: {
     fontSize: 20,
@@ -51,17 +51,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 400,
     textAlign: "center",
-    color: "#4b5563",
+    color: "#111827",
     marginBottom: 4,
   },
   separator: {
     borderBottomWidth: 1,
     borderBottomColor: "#d1d5db",
-    marginVertical: 3,
+    marginVertical: 8,
   },
   contactGrid: {
     flexDirection: "row",
-    marginBottom: 4,
+    marginTop: 8,
+    marginBottom: 8,
   },
   contactColumn: {
     flex: 1,
@@ -69,25 +70,25 @@ const styles = StyleSheet.create({
   },
   contactItem: {
     fontSize: 10,
-    color: "#4b5563",
+    color: "#111827",
   },
   contactLabel: {
     fontWeight: 600,
   },
   section: {
-    marginBottom: 12,
+    marginVertical: 7,
   },
   sectionTitle: {
     fontSize: 12,
     fontWeight: 700,
     textTransform: "uppercase",
     letterSpacing: 1,
-    marginBottom: 4,
+    marginBottom: 6,
     color: "#111827",
   },
   summaryText: {
     fontSize: 11,
-    color: "#374151",
+    color: "#111827",
     lineHeight: 1.5,
   },
   ratingContainer: {
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
   },
   languageRow: {
     flexDirection: "row",
-    marginBottom: 6,
+    marginBottom: 8,
     alignItems: "center",
   },
   languageRatingContainer: {
@@ -126,14 +127,15 @@ const styles = StyleSheet.create({
   },
   diplomaDate: {
     fontSize: 9,
-    color: "#6b7280",
+    fontWeight: 400,
+    color: "#111827",
   },
   diplomaInstitution: {
     fontSize: 10,
-    color: "#4b5563",
+    color: "#111827",
   },
   experienceItem: {
-    marginBottom: 12,
+    marginBottom: 10,
   },
   experienceHeader: {
     marginBottom: 4,
@@ -145,24 +147,27 @@ const styles = StyleSheet.create({
   },
   experiencePosition: {
     fontSize: 11,
-    fontWeight: 600,
+    fontWeight: 700,
     color: "#111827",
   },
   experienceDate: {
     fontSize: 9,
-    color: "#6b7280",
+    fontWeight: 400,
+    color: "#111827",
   },
   experienceCompany: {
     fontSize: 10,
-    color: "#4b5563",
+    fontWeight: 500,
+    color: "#111827",
     marginBottom: 4,
   },
   descriptionList: {
     marginLeft: 4,
   },
   descriptionItem: {
-    fontSize: 11,
-    color: "#374151",
+    fontSize: 10,
+    fontWeight: 400,
+    color: "#111827",
     marginBottom: 2,
   },
   bulletPoint: {
@@ -171,10 +176,11 @@ const styles = StyleSheet.create({
   gridContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
+    marginBottom: 8,
   },
   gridItem: {
-    width: "33.33%",
-    paddingRight: 8,
+    width: "50%",
+    paddingRight: 20,
     marginBottom: 4,
   },
   skillItemContainer: {
@@ -185,9 +191,15 @@ const styles = StyleSheet.create({
   skillName: {
     flex: 1,
     fontSize: 10,
-    color: "#374151",
+    color: "#111827",
     fontWeight: 500,
     marginRight: 4,
+  },
+  softSkillContainer: { 
+    flexDirection: "row", 
+    flexWrap: "wrap", 
+    gap: 6,
+    marginBottom: 8 
   },
   softSkillItem: {
     fontSize: 10,
@@ -279,10 +291,10 @@ export function CVPDFDocument({
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={styles.name}>
-            {data.personalInfo.name || "Votre Nom"}
+            {data.personalInfo.poste || "Votre Poste Actuel"}
           </Text>
           <Text style={styles.title}>
-            {data.personalInfo.poste || "Votre Poste Actuel"}
+            {data.personalInfo.name || "Votre Nom"}
           </Text>
           <View style={styles.separator} />
 
@@ -296,6 +308,10 @@ export function CVPDFDocument({
                 <Text style={styles.contactLabel}>Tel:</Text>{" "}
                 {data.personalInfo.phone || "01234 567890"}
               </Text>
+              <Text style={styles.contactItem}>
+                <Text style={styles.contactLabel}>WhatsApp:</Text>{" "}
+                {data.personalInfo.whatsApp || "Votre Numéro WhatsApp"}
+              </Text>
             </View>
             <View style={styles.contactColumn}>
               <Text style={styles.contactItem}>
@@ -305,6 +321,10 @@ export function CVPDFDocument({
               <Text style={styles.contactItem}>
                 <Text style={styles.contactLabel}>Portfolio:</Text>{" "}
                 {data.personalInfo.portfolio || ""}
+              </Text>
+              <Text style={styles.contactItem}>
+                <Text style={styles.contactLabel}>LinkedIn:</Text>{" "}
+                {data.personalInfo.linkedIn || "Votre Profil LinkedIn"}
               </Text>
             </View>
           </View>
@@ -339,24 +359,6 @@ export function CVPDFDocument({
           </View>
         )}
 
-        {data.languages && data.languages.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{t("languages")}</Text>
-            <View style={styles.gridContainer}>
-              {data.languages
-                .filter((lang) => lang.name.trim())
-                .map((language) => (
-                  <View key={language.id} style={styles.gridItem}>
-                    <View style={styles.skillItemContainer}>
-                      <Text style={styles.skillName}>{language.name}</Text>
-                      {renderLanguageRating(language.level, language.iconType as RatingIconType || "star")}
-                    </View>
-                  </View>
-                ))}
-            </View>
-          </View>
-        )}
-
         <View style={styles.separator} />
 
         {data.diplomas.length > 0 && (
@@ -380,10 +382,11 @@ export function CVPDFDocument({
         )}
 
         <View style={styles.separator} />
+
         {data.softSkills && data.softSkills.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{t("softSkills")}</Text>
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+            <View style={styles.softSkillContainer}>
               {data.softSkills
                 .filter((skill) => skill.name.trim())
                 .map((skill) => (
@@ -396,8 +399,28 @@ export function CVPDFDocument({
             </View>
           </View>
         )}
+
         <View style={styles.separator} />
 
+        {data.languages && data.languages.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t("languages")}</Text>
+            <View style={styles.gridContainer}>
+              {data.languages
+                .filter((lang) => lang.name.trim())
+                .map((language) => (
+                  <View key={language.id} style={styles.gridItem}>
+                    <View style={styles.skillItemContainer}>
+                      <Text style={styles.skillName}>{language.name}</Text>
+                      {renderLanguageRating(language.level, language.iconType as RatingIconType || "star")}
+                    </View>
+                  </View>
+                ))}
+            </View>
+          </View>
+        )}
+
+        <View />
         {data.experiences.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>

@@ -39,7 +39,7 @@ export function JsonImportExport({ data, onImport }: JsonImportExportProps) {
       }
 
       const fileName = data.personalInfo.name
-        ? `resume_${data.personalInfo.name.replace(/\s+/g, "_")}.json`
+        ? `resume_${data.personalInfo.name.replace(/\s+/g, "_")}_${data.personalInfo.poste.replace(/\s+/g, "_").replace("_-_5_Ans_expérieces", "")}.json`
         : "resume.json";
 
       downloadJSON(jsonResume, fileName);

@@ -17,7 +17,8 @@ import { Form } from "@/components/ui/form";
 import { Toolbar } from "@/components/cv/Toolbar";
 import { LanguageProvider, useLanguage } from "@/context/LanguageContext";
 import { SoftSkillsEditor } from "@/components/cv/SoftSkillEditor";
-import { themeList } from "@/themes";
+import { useShallow } from "zustand/react/shallow";
+import { useCVDataStore } from "@/context/cvDataContext";
 
 const defaultValues: CVDataForm = {
   personalInfo: {
@@ -27,6 +28,8 @@ const defaultValues: CVDataForm = {
     portfolio: "",
     adresse: "",
     phone: "",
+    linkedIn: "",
+    whatsApp: "",
     description: "",
   },
   skills: [],
@@ -49,7 +52,13 @@ function BuilderPageContent() {
   const { t, language } = useLanguage();
   const [skillsIconType, setSkillsIconType] = useState<RatingIconType>("star");
   const [languagesIconType, setLanguagesIconType] = useState<RatingIconType>("heart");
-  const [cvData, setCvData] = useState<CVData | null>(null);
+  const { cvData, setCvData } = useCVDataStore(
+    useShallow((state) => ({
+      cvData: state.cvData,
+      setCvData: state.setCvData,
+    })),
+  );
+  const [isHydrated, setIsHydrated] = useState(false);
 
   const form = useForm<CVDataForm>({
     resolver: zodResolver(cvDataSchema),
@@ -58,11 +67,21 @@ function BuilderPageContent() {
   });
 
   useEffect(() => {
+    if (cvData && !isHydrated) {
+      form.reset(cvData);
+      setIsHydrated(true);
+    }
+  }, [cvData, form, isHydrated]);
+
+  // 2. Sauvegarder dans Zustand uniquement après l'hydratation initiale
+  useEffect(() => {
     const subscription = form.watch((value) => {
-      setCvData(value as CVData);
+      if (isHydrated) {
+        setCvData(value as CVData);
+      }
     });
     return () => subscription.unsubscribe();
-  }, [form]);
+  }, [form, setCvData, isHydrated]);
 
   const skillsArray = useFieldArray({
     control: form.control,

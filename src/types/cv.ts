@@ -45,12 +45,13 @@ export interface Experience {
 }
 
 export interface PersonalInfo {
-  // New interface for personal info
   name: string; // Required
   email: string; // Valid email
   poste: string; // Required
   portfolio: string; // Required
   adresse: string; // Required
   phone: string; // Required
+  linkedIn: string; // Required
+  whatsApp: string; // Required
   description?: string; // Optional
 }

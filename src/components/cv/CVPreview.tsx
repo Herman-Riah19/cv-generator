@@ -57,10 +57,10 @@ export function CVPreview({ data }: CVPreviewProps) {
       {/* Header - ATS Optimized */}
       <header className="mb-8">
         <h1 className="text-3xl text-center font-bold text-gray-900 mb-2">
-          {data.personalInfo.name || "Votre Nom"}
+          {data.personalInfo.poste || "Votre Poste Actuel"}
         </h1>
         <h2 className="text-2xl text-center font-normal text-gray-600">
-          {data.personalInfo.poste || "Votre Poste Actuel"}
+          {data.personalInfo.name || "Votre Nom"}
         </h2>
 
         <Separator />
@@ -68,11 +68,15 @@ export function CVPreview({ data }: CVPreviewProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-md p-2">
           <div className="flex flex-col gap-2">
             <span className=" text-gray-600">
-              <strong>email:</strong>{" "}
+              <strong>Email:</strong>{" "}
               {data.personalInfo.email || "votre.email@example.com"}
             </span>
             <span className="text-gray-600">
               <strong>Tel:</strong> {data.personalInfo.phone || "01234 567890"}
+            </span>
+            <span className="text-gray-600">
+              <strong>WhatsApp:</strong>{" "}
+              {data.personalInfo.whatsApp || "Votre Numéro WhatsApp"}
             </span>
           </div>
           <div className="flex flex-col gap-2">
@@ -88,6 +92,10 @@ export function CVPreview({ data }: CVPreviewProps) {
               >
                 {data.personalInfo.portfolio || ""}
               </Link>
+            </span>
+            <span className="text-gray-600">
+              <strong>LinkedIn:</strong>{" "}
+              {data.personalInfo.linkedIn || "Votre Profil LinkedIn"}
             </span>
           </div>
         </div>
@@ -112,7 +120,7 @@ export function CVPreview({ data }: CVPreviewProps) {
             <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
               {t("technicalSkills")}
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {data.skills
                 .filter((skill) => skill.name.trim())
                 .map((skill, index) => (
@@ -126,38 +134,6 @@ export function CVPreview({ data }: CVPreviewProps) {
                           key={i}
                           type={(skill.iconType as RatingIconType) || "star"}
                           filled={i < skill.level}
-                          size={16}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-            </div>
-          </section>
-        )}
-
-        <Separator />
-
-        {/* Languages Section */}
-        {data.languages && data.languages.length > 0 && (
-          <section>
-            <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
-              {t("languages")}
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-              {data.languages
-                .filter((lang) => lang.name.trim())
-                .map((language) => (
-                  <div key={language.id} className="flex gap-4 py-1">
-                    <span className="w-1/3 text-base text-gray-700 font-medium">
-                      {language.name}
-                    </span>
-                    <div className="flex gap-1">
-                      {Array.from({ length: 5 }, (_, i) => (
-                        <RatingIcon
-                          key={i}
-                          type={(language.iconType as RatingIconType) || "star"}
-                          filled={i < language.level}
                           size={16}
                         />
                       ))}
@@ -220,6 +196,38 @@ export function CVPreview({ data }: CVPreviewProps) {
           </section>
         )}
         
+        <Separator />
+
+         {/* Languages Section */}
+        {data.languages && data.languages.length > 0 && (
+          <section>
+            <h2 className="text-xl font-bold text-gray-900 mb-3 uppercase tracking-wide">
+              {t("languages")}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+              {data.languages
+                .filter((lang) => lang.name.trim())
+                .map((language) => (
+                  <div key={language.id} className="flex gap-4 py-1">
+                    <span className="w-1/3 text-base text-gray-700 font-medium">
+                      {language.name}
+                    </span>
+                    <div className="flex gap-1">
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <RatingIcon
+                          key={i}
+                          type={(language.iconType as RatingIconType) || "star"}
+                          filled={i < language.level}
+                          size={16}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </section>
+        )}
+
         <Separator />
         
         {data.experiences.length > 0 && (
