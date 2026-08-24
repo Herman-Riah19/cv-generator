@@ -51,7 +51,8 @@ export default function BuilderPage() {
 function BuilderPageContent() {
   const { t, language } = useLanguage();
   const [skillsIconType, setSkillsIconType] = useState<RatingIconType>("star");
-  const [languagesIconType, setLanguagesIconType] = useState<RatingIconType>("heart");
+  const [languagesIconType, setLanguagesIconType] =
+    useState<RatingIconType>("heart");
   const { cvData, setCvData } = useCVDataStore(
     useShallow((state) => ({
       cvData: state.cvData,
@@ -141,12 +142,10 @@ function BuilderPageContent() {
 
             {/* Preview Section */}
             <div className="lg:col-span-2 space-y-8">
-              {cvData && (
-                <Toolbar
-                  data={cvData}
-                  onImport={(importedData) => form.reset(importedData)}
-                />
-              )}
+              <Toolbar
+                data={cvData as CVData}
+                onImport={(importedData) => form.reset(importedData)}
+              />
 
               <div className="lg:sticky lg:top-8 space-y-4">
                 <PDFGenerator
@@ -156,9 +155,7 @@ function BuilderPageContent() {
                 />
 
                 <div>
-                  <CVPreview
-                    data={form.getValues()}
-                  />
+                  <CVPreview data={form.getValues()} />
                 </div>
               </div>
             </div>
