@@ -31,7 +31,7 @@ export function PDFGenerator({
       const fileName = data.personalInfo.name
         ? `${language === "en" ? "EN_":""}CV_${data.personalInfo.name.replace(/\s+/g, "_")}_${data.personalInfo.poste
             .replace(/\s+/g, "_")
-            .replace("_-_5_Ans_expérieces", "")
+            .replace("_-_5_Ans_expériences", "")
             .replace("_-_5_years_experiences", "")}.pdf`
         : "CV.pdf";
 
